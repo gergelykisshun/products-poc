@@ -3,9 +3,9 @@ import { limitQuery } from "./constants";
 import { api } from "./init";
 
 export const getProducts = async (
-  skip?: number
+  skip: number
 ): Promise<IProductCardData[]> => {
-  const response = await api.get(`${limitQuery}&skip=${skip || 0}`);
+  const response = await api.get(`${limitQuery}&skip=${skip}`);
 
   const products: IProduct[] = response.data.products;
 

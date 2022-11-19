@@ -20,6 +20,7 @@
 
     .image {
       border-radius: $radius;
+      object-fit: cover;
     }
 
     .corner-position {

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getProducts } from "../axios/product";
 import ProductCard from "../components/ProductCard/ProductCard";
 import { IProductCardData } from "../types/product";
@@ -11,21 +11,43 @@ const Home: NextPage = () => {
   const [products, setProducts] = useState<IProductCardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchProducts = async () => {
-    try {
-      const products = await getProducts();
-      setProducts(products);
-      setLoading(false);
-      toast.success("Products loaded!");
-    } catch (e) {
-      setLoading(false);
-      toast.error("Something went wrong! Please try again!");
-    }
-  };
+  const [skip, setSkip] = useState<number>(0);
+  const [isFetchingNewItems, setIsFetchingNewItems] = useState<boolean>(false);
+
+  const fetchProducts = useCallback(
+    async (skip: number) => {
+      try {
+        const products = await getProducts(skip);
+        setProducts((prev) => [...prev, ...products]);
+        setLoading(false);
+        toast.success("Products loaded!");
+      } catch (e) {
+        setLoading(false);
+        toast.error("Something went wrong! Please try again!");
+      }
+    },
+    [skip]
+  );
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(skip);
   }, []);
+
+  useEffect(() => {
+    if (isFetchingNewItems) {
+      fetchProducts(skip);
+    }
+    setIsFetchingNewItems(false);
+  }, [isFetchingNewItems]);
+
+  const startFetchingNewItems = () => {
+    if (products.length < 100) {
+      setSkip((prev) => prev + 10);
+      setIsFetchingNewItems(true);
+    } else {
+      toast.info("There are no more items available!");
+    }
+  };
 
   return (
     <div>
@@ -51,6 +73,7 @@ const Home: NextPage = () => {
               </p>
             )}
           </main>
+          <button onClick={() => startFetchingNewItems()}>Get more</button>
         </div>
       )}
     </div>
