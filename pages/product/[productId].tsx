@@ -39,7 +39,7 @@ const ProductPage: NextPage = () => {
     <LoadingSpinner />
   ) : (
     <div className="min-h-screen flex items-center">
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 p-5">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-5">
         <div className="col-span-2">
           <Swiper
             slidesPerView={1}
