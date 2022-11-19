@@ -13,9 +13,10 @@ export interface IProduct {
 }
 
 export interface IProductCardData {
+  id: number;
   title: string;
   description: string;
-  discountPercentage: string;
-  price: string;
+  discountPercentage: number;
+  price: number;
   thumbnail: string;
 }
