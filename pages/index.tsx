@@ -44,14 +44,24 @@ const Home: NextPage = () => {
         pauseOnHover={false}
         theme="dark"
       />
-      <h1>See Products</h1>
+      <h1 className="text-center">See Products</h1>
 
       {loading ? (
         <LoadingSpinner />
       ) : (
-        products.map((product) => (
-          <ProductCard key={product.id} productData={product} />
-        ))
+        <div className="mx-auto" style={{ width: 1440 }}>
+          <main className="grid grid-cols-4 gap-2">
+            {products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard key={product.id} productData={product} />
+              ))
+            ) : (
+              <p>
+                No products are available currently. Please come back later!
+              </p>
+            )}
+          </main>
+        </div>
       )}
     </div>
   );
