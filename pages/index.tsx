@@ -37,16 +37,18 @@ const Home: NextPage = () => {
           rel="stylesheet"
         />
       </Head>
-      <h1 className="text-center">See Products</h1>
+      <h1 className="text-center py-9">See Products</h1>
 
       {loading ? (
         <LoadingSpinner />
       ) : (
         <div className="mx-auto" style={{ width: 1440 }}>
-          <main className="grid grid-cols-4 gap-2">
+          <main className="grid grid-cols-4 gap-y-6">
             {products.length > 0 ? (
               products.map((product) => (
-                <ProductCard key={product.id} productData={product} />
+                <div className="flex justify-center">
+                  <ProductCard key={product.id} productData={product} />
+                </div>
               ))
             ) : (
               <p>

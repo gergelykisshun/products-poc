@@ -88,9 +88,10 @@ const ProductPage: NextPage = () => {
           <div className="flex items-center justify-between">
             <p className="font-semibold text-6xl">{product.price} $</p>
             <button
-              onClick={() =>
-                toast.info(`You added ${product.title} to your cart!`)
-              }
+              onClick={() => {
+                toast.info(`You added ${product.title} to your cart!`);
+                setTimeout(() => router.push("/"), 1500);
+              }}
               className="font-semibold text-2xl text-white bg-black rounded-full px-8 py-3"
             >
               Add to cart
