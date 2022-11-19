@@ -6,13 +6,13 @@ import ProductCard from "../components/ProductCard/ProductCard";
 import { IProductCardData } from "../types/product";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
-import { ScrollbarEvents } from "swiper/types";
 import useOnScreen from "../hooks/useOnScreen";
 
 const Home: NextPage = () => {
   const [products, setProducts] = useState<IProductCardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [total, setTotal] = useState<number>(0);
   const [skip, setSkip] = useState<number>(0);
   const [isFetchingNewItems, setIsFetchingNewItems] = useState<boolean>(false);
 
@@ -23,7 +23,8 @@ const Home: NextPage = () => {
     async (skip: number) => {
       try {
         const products = await getProducts(skip);
-        setProducts((prev) => [...prev, ...products]);
+        setProducts((prev) => [...prev, ...products.data]);
+        setTotal(products.total);
         setLoading(false);
         toast.success("Products loaded!");
       } catch (e) {
@@ -52,7 +53,7 @@ const Home: NextPage = () => {
   }, [isFetchingNewItems]);
 
   const startFetchingNewItems = () => {
-    if (products.length < 100) {
+    if (products.length < total) {
       setSkip((prev) => prev + 10);
       setIsFetchingNewItems(true);
     } else {
