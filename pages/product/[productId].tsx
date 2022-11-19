@@ -43,7 +43,7 @@ const ProductPage: NextPage = () => {
       <Head>
         <title>{product.title}</title>
       </Head>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-5">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 px-20">
         <div className="col-span-2">
           <Swiper
             slidesPerView={1}
@@ -57,6 +57,7 @@ const ProductPage: NextPage = () => {
                 <Image
                   src={image}
                   alt={product.title}
+                  // TODO
                   className={styles.image}
                   loading="eager"
                   width={500}
