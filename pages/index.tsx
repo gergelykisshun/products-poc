@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { getProducts } from "../axios/product";
 import ProductCard from "../components/ProductCard/ProductCard";
 import { IProductCardData } from "../types/product";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 const Home: NextPage = () => {
@@ -38,12 +37,6 @@ const Home: NextPage = () => {
           rel="stylesheet"
         />
       </Head>
-      <ToastContainer
-        position="top-right"
-        pauseOnFocusLoss={false}
-        pauseOnHover={false}
-        theme="dark"
-      />
       <h1 className="text-center">See Products</h1>
 
       {loading ? (

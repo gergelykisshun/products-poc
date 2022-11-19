@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
 import { IProductCardData } from "../../types/product";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import styles from "./ProductCard.module.scss";
 
 type Props = {
@@ -25,7 +24,7 @@ const ProductCard: FC<Props> = ({ productData }) => {
             fill
             quality={100}
           />
-          <p className={styles.discount}>{productData.discountPercentage}%</p>
+          <p className={`${styles['corner-position']} discount`}>{productData.discountPercentage}%</p>
         </div>
 
         <div className="flex items-center justify-between w-full">

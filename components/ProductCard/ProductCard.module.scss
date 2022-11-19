@@ -22,19 +22,10 @@
       border-radius: $radius;
     }
 
-    .discount {
+    .corner-position {
       position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       top: 10px;
       right: 10px;
-      padding: 4.5px 16px;
-      border-radius: calc($radius * 2);
-      font-weight: 600;
-      font-size: 14px;
-      color: #ffffff;
-      background-color: $bg-blue;
     }
   }
 }
