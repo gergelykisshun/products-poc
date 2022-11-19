@@ -1,7 +1,5 @@
 @import "../../styles/variables.scss";
 
-
-
 .info {
   p {
     font-weight: 500;
@@ -9,4 +7,11 @@
     line-height: 32px;
     color: $text-grey;
   }
+}
+
+.image {
+  width: 500px;
+  height: 500px;
+  object-fit: cover;
+  object-position: center center;
 }

@@ -1,8 +1,14 @@
 @import "swiper/swiper-bundle.min.css";
 @import "swiper/swiper.min.css";
 
-// .swiper-slide {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #000 !important;
+}

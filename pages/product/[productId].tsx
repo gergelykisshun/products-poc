@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper";
 import { useRouter } from "next/router";
@@ -10,7 +11,6 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import Star from "../../svg/Star";
 import EmptyStar from "../../svg/EmptyStar";
 import styles from "./productPage.module.scss";
-import Head from "next/head";
 
 const ProductPage: NextPage = () => {
   const router = useRouter();
@@ -39,7 +39,7 @@ const ProductPage: NextPage = () => {
     <LoadingSpinner />
   ) : (
     <div className="min-h-screen flex items-center">
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-4 p-5">
         <div className="col-span-2">
           <Swiper
             slidesPerView={1}
@@ -50,10 +50,14 @@ const ProductPage: NextPage = () => {
           >
             {product.images.map((image) => (
               <SwiperSlide key={image}>
-                <img
+                <Image
                   src={image}
                   alt={product.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  className={styles.image}
+                  loading="eager"
+                  width={500}
+                  height={500}
+                  quality={100}
                 />
               </SwiperSlide>
             ))}

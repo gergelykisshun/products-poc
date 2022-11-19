@@ -4,6 +4,7 @@ import { api } from "./init";
 
 export const getProducts = async (): Promise<IProductCardData[]> => {
   const response = await api.get(`${limitQuery}`);
+  console.log(response);
   const products: IProduct[] = response.data.products;
 
   return products.map((product) => ({
