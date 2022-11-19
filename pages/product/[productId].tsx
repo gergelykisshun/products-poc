@@ -11,6 +11,7 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import Star from "../../svg/Star";
 import EmptyStar from "../../svg/EmptyStar";
 import styles from "./productPage.module.scss";
+import Head from "next/head";
 
 const ProductPage: NextPage = () => {
   const router = useRouter();
@@ -39,6 +40,9 @@ const ProductPage: NextPage = () => {
     <LoadingSpinner />
   ) : (
     <div className="min-h-screen flex items-center">
+      <Head>
+        <title>{product.title}</title>
+      </Head>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-5">
         <div className="col-span-2">
           <Swiper
