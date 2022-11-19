@@ -46,8 +46,8 @@ const Home: NextPage = () => {
           <main className="grid grid-cols-4 gap-y-6">
             {products.length > 0 ? (
               products.map((product) => (
-                <div className="flex justify-center">
-                  <ProductCard key={product.id} productData={product} />
+                <div key={product.id} className="flex justify-center">
+                  <ProductCard productData={product} />
                 </div>
               ))
             ) : (

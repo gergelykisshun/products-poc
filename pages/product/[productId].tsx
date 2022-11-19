@@ -70,9 +70,9 @@ const ProductPage: NextPage = () => {
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map((starNbr, i) => {
                   if (starNbr <= product.rating) {
-                    return <Star />;
+                    return <Star key={i} />;
                   }
-                  return <EmptyStar />;
+                  return <EmptyStar key={i} />;
                 })}
                 <p>{product.rating}</p>
               </div>
