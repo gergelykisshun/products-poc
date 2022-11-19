@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import ProductCard from "../components/ProductCard/ProductCard";
 
 const Home: NextPage = () => {
   return (
@@ -13,6 +14,9 @@ const Home: NextPage = () => {
         />
       </Head>
       <h1>See Products</h1>
+      <div>
+        <ProductCard />
+      </div>
     </div>
   );
 };

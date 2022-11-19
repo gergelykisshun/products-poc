@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
 import React, { FC } from "react";
+import styles from "./ProductCard.module.scss";
 
 type Props = {};
 
 const ProductCard: FC<Props> = () => {
-  return <div>ProductCard</div>;
+  return <div className={styles.test}>ProductCard</div>;
 };
 
 export default ProductCard;
