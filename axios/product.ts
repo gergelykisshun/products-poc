@@ -2,9 +2,11 @@ import { IProduct, IProductCardData } from "../types/product";
 import { limitQuery } from "./constants";
 import { api } from "./init";
 
-export const getProducts = async (): Promise<IProductCardData[]> => {
-  const response = await api.get(`${limitQuery}`);
-  console.log(response);
+export const getProducts = async (
+  skip?: number
+): Promise<IProductCardData[]> => {
+  const response = await api.get(`${limitQuery}&skip=${skip || 0}`);
+
   const products: IProduct[] = response.data.products;
 
   return products.map((product) => ({
