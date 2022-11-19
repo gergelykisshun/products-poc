@@ -35,8 +35,10 @@ const Home: NextPage = () => {
   );
 
   useEffect(() => {
-    console.log(beforeCheckoutSubmitShown);
-  });
+    if (beforeCheckoutSubmitShown) {
+      startFetchingNewItems();
+    }
+  }, [beforeCheckoutSubmitShown]);
 
   useEffect(() => {
     fetchProducts(skip);
@@ -49,13 +51,13 @@ const Home: NextPage = () => {
     setIsFetchingNewItems(false);
   }, [isFetchingNewItems]);
 
-  const startFetchingNewItems = (e: Event) => {
-    // if (products.length < 100) {
-    //   setSkip((prev) => prev + 10);
-    //   setIsFetchingNewItems(true);
-    // } else {
-    //   toast.info("There are no more items available!");
-    // }
+  const startFetchingNewItems = () => {
+    if (products.length < 100) {
+      setSkip((prev) => prev + 10);
+      setIsFetchingNewItems(true);
+    } else {
+      toast.info("There are no more items available!");
+    }
   };
 
   return (
@@ -69,7 +71,7 @@ const Home: NextPage = () => {
         <LoadingSpinner isFullscreen />
       ) : (
         <>
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center">
             <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {products.length > 0 ? (
                 products.map((product) => (
@@ -83,8 +85,9 @@ const Home: NextPage = () => {
                 </p>
               )}
             </main>
+            {isFetchingNewItems && <LoadingSpinner isFullscreen />}
           </div>
-          <div ref={beforeCheckoutSubmitRef}>END</div>
+          <div ref={beforeCheckoutSubmitRef} />
         </>
       )}
     </div>
