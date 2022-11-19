@@ -1,11 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getProducts } from "../axios/product";
 import ProductCard from "../components/ProductCard/ProductCard";
 import { IProductCardData } from "../types/product";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
+import { ScrollbarEvents } from "swiper/types";
+import useOnScreen from "../hooks/useOnScreen";
 
 const Home: NextPage = () => {
   const [products, setProducts] = useState<IProductCardData[]>([]);
@@ -13,6 +15,9 @@ const Home: NextPage = () => {
 
   const [skip, setSkip] = useState<number>(0);
   const [isFetchingNewItems, setIsFetchingNewItems] = useState<boolean>(false);
+
+  const [beforeCheckoutSubmitShown, beforeCheckoutSubmitRef] =
+    useOnScreen<HTMLDivElement>();
 
   const fetchProducts = useCallback(
     async (skip: number) => {
@@ -30,6 +35,10 @@ const Home: NextPage = () => {
   );
 
   useEffect(() => {
+    console.log(beforeCheckoutSubmitShown);
+  });
+
+  useEffect(() => {
     fetchProducts(skip);
   }, []);
 
@@ -40,13 +49,13 @@ const Home: NextPage = () => {
     setIsFetchingNewItems(false);
   }, [isFetchingNewItems]);
 
-  const startFetchingNewItems = () => {
-    if (products.length < 100) {
-      setSkip((prev) => prev + 10);
-      setIsFetchingNewItems(true);
-    } else {
-      toast.info("There are no more items available!");
-    }
+  const startFetchingNewItems = (e: Event) => {
+    // if (products.length < 100) {
+    //   setSkip((prev) => prev + 10);
+    //   setIsFetchingNewItems(true);
+    // } else {
+    //   toast.info("There are no more items available!");
+    // }
   };
 
   return (
@@ -59,22 +68,24 @@ const Home: NextPage = () => {
       {loading ? (
         <LoadingSpinner isFullscreen />
       ) : (
-        <div className="flex justify-center">
-          <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {products.length > 0 ? (
-              products.map((product) => (
-                <div key={product.id} className="flex justify-center">
-                  <ProductCard productData={product} />
-                </div>
-              ))
-            ) : (
-              <p>
-                No products are available currently. Please come back later!
-              </p>
-            )}
-          </main>
-          <button onClick={() => startFetchingNewItems()}>Get more</button>
-        </div>
+        <>
+          <div className="flex justify-center">
+            <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {products.length > 0 ? (
+                products.map((product) => (
+                  <div key={product.id} className="flex justify-center">
+                    <ProductCard productData={product} />
+                  </div>
+                ))
+              ) : (
+                <p>
+                  No products are available currently. Please come back later!
+                </p>
+              )}
+            </main>
+          </div>
+          <div ref={beforeCheckoutSubmitRef}>END</div>
+        </>
       )}
     </div>
   );
