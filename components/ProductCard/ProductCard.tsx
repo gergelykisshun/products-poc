@@ -1,11 +1,10 @@
-import React, { FC } from 'react'
+import { useRouter } from "next/router";
+import React, { FC } from "react";
 
-type Props = {}
+type Props = {};
 
 const ProductCard: FC<Props> = () => {
-  return (
-    <div>ProductCard</div>
-  )
-}
+  return <div>ProductCard</div>;
+};
 
-export default ProductCard
+export default ProductCard;

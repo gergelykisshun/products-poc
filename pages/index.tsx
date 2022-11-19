@@ -7,8 +7,12 @@ const Home: NextPage = () => {
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600&display=swap"
+          rel="stylesheet"
+        />
       </Head>
-      <h1>See Products</h1>;
+      <h1>See Products</h1>
     </div>
   );
 };
