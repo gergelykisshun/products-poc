@@ -37,7 +37,7 @@ const ProductPage: NextPage = () => {
   }, [fetchProducts]);
 
   return loading ? (
-    <LoadingSpinner />
+    <LoadingSpinner isFullscreen />
   ) : (
     <div className="min-h-screen flex items-center">
       <Head>

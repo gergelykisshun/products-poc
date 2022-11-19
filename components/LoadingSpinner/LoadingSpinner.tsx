@@ -1,8 +1,18 @@
 import { FC } from "react";
 import SyncLoader from "react-spinners/SyncLoader";
 
-const LoadingSpinner: FC = () => {
-  return <SyncLoader color="#0f0" aria-label="Loading Spinner" />;
+type Props = {
+  isFullscreen: boolean;
+};
+
+const LoadingSpinner: FC<Props> = ({ isFullscreen }) => {
+  return (
+    <div
+      className={`flex justify-center ${isFullscreen && "h-96 items-center"}`}
+    >
+      <SyncLoader color="#6100ff" aria-label="Loading Spinner" />
+    </div>
+  );
 };
 
 export default LoadingSpinner;
