@@ -22,9 +22,15 @@ const ProductCard: FC<Props> = ({ productData }) => {
             className={styles.image}
             loading="eager"
             fill
+            sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+            priority
             quality={100}
           />
-          <p className={`${styles['corner-position']} discount`}>{productData.discountPercentage}%</p>
+          <p className={`${styles["corner-position"]} discount`}>
+            {productData.discountPercentage}%
+          </p>
         </div>
 
         <div className="flex items-center justify-between w-full">
