@@ -31,11 +31,6 @@ const Home: NextPage = () => {
     <div>
       <Head>
         <title>Products - POC</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600&display=swap"
-          rel="stylesheet"
-        />
       </Head>
       <h1 className="text-center py-9">See Products</h1>
 
