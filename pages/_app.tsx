@@ -12,9 +12,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         pauseOnHover={false}
         theme="dark"
       />
-      <div className="mx-auto" style={{ width: 1440 }}>
-        <Component {...pageProps} />
-      </div>
+
+      <Component {...pageProps} />
     </>
   );
 }
