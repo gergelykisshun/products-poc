@@ -43,7 +43,7 @@ const ProductPage: NextPage = () => {
       <Head>
         <title>{product.title}</title>
       </Head>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 px-20">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 px-5 lg:px-20">
         <div className="col-span-2">
           <Swiper
             slidesPerView={1}
@@ -72,7 +72,7 @@ const ProductPage: NextPage = () => {
           </Swiper>
         </div>
         <div className="col-span-2 flex flex-col justify-center space-y-3">
-          <div className="flex justify-between">
+          <div className="space-y-2 lg:flex lg:justify-between">
             <p className="font-semibold text-5xl">{product.title}</p>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
