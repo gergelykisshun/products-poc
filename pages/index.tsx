@@ -16,8 +16,7 @@ const Home: NextPage = () => {
   const [skip, setSkip] = useState<number>(0);
   const [isFetchingNewItems, setIsFetchingNewItems] = useState<boolean>(false);
 
-  const [beforeCheckoutSubmitShown, beforeCheckoutSubmitRef] =
-    useOnScreen<HTMLDivElement>();
+  const [reachedPageEnd, reachedPageEndRef] = useOnScreen();
 
   const fetchProducts = useCallback(
     async (skip: number) => {
@@ -36,10 +35,10 @@ const Home: NextPage = () => {
   );
 
   useEffect(() => {
-    if (beforeCheckoutSubmitShown) {
+    if (reachedPageEnd) {
       startFetchingNewItems();
     }
-  }, [beforeCheckoutSubmitShown]);
+  }, [reachedPageEnd]);
 
   useEffect(() => {
     fetchProducts(skip);
@@ -88,7 +87,7 @@ const Home: NextPage = () => {
             </main>
             {isFetchingNewItems && <LoadingSpinner isFullscreen />}
           </div>
-          <div ref={beforeCheckoutSubmitRef} />
+          <div ref={reachedPageEndRef} />
         </>
       )}
     </div>
