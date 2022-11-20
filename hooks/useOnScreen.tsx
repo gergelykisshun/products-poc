@@ -1,17 +1,18 @@
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 
-export default function useVisibility<T>(
+export default function useVisibility(
   offset = 0
-): [boolean, MutableRefObject<T>] {
+): [boolean, MutableRefObject<any>] {
   const [isVisible, setIsVisible] = useState(false);
-  const currentElement = useRef(null);
+  const currentElement = useRef();
 
   const onScroll = () => {
     if (!currentElement.current) {
       setIsVisible(false);
       return;
     }
-    const top = currentElement.current.getBoundingClientRect().top;
+    const node = currentElement.current as HTMLElement;
+    const top = node.getBoundingClientRect().top;
     setIsVisible(top + offset >= 0 && top - offset <= window.innerHeight);
   };
 
