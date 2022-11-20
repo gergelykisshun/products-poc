@@ -98,7 +98,9 @@ const ProductPage: NextPage = () => {
           <p className="discount">{product.discountPercentage}%</p>
 
           <div className="flex items-center justify-between">
-            <p className="font-semibold text-6xl">{product.price} $</p>
+            <p className="font-semibold text-4xl lg:text-6xl">
+              {product.price} $
+            </p>
             <button
               onClick={() => {
                 toast.info(`You added ${product.title} to your cart!`);
