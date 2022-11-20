@@ -54,15 +54,19 @@ const ProductPage: NextPage = () => {
           >
             {product.images.map((image) => (
               <SwiperSlide key={image}>
-                <Image
-                  src={image}
-                  alt={product.title}
-                  className={styles.image}
-                  loading="eager"
-                  width={500}
-                  height={500}
-                  quality={100}
-                />
+                <div className={styles.image}>
+                  <Image
+                    src={image}
+                    alt={product.title}
+                    loading="eager"
+                    fill
+                    sizes="(max-width: 768px) 100vw,
+                    (max-width: 1200px) 50vw,
+                    33vw"
+                    quality={100}
+                    className="p-7 object-contain"
+                  />
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
