@@ -10,9 +10,14 @@
 }
 
 .image {
-  width: 500px;
-  height: 500px;
-  object-fit: cover;
-  object-position: center center;
-  padding: 35px;
+  position: relative;
+  width: 35vw;
+  height: 35vw;
+}
+
+@media screen and (max-width: 1024px) {
+  .image {
+    width: 50vw;
+    height: 50vw;
+  }
 }
