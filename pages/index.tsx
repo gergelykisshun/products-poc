@@ -8,7 +8,12 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import useOnScreen from "../hooks/useOnScreen";
 
-const Home: NextPage = () => {
+type Props = {
+  preFetchedProducts: IProductCardData[];
+  initTotal: number;
+};
+
+const Home: NextPage<Props> = ({ preFetchedProducts, initTotal }) => {
   const [products, setProducts] = useState<IProductCardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -41,7 +46,9 @@ const Home: NextPage = () => {
   }, [reachedPageEnd]);
 
   useEffect(() => {
-    fetchProducts(skip);
+    setProducts(preFetchedProducts);
+    setTotal(initTotal);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -93,5 +100,16 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  const preFetchedProducts = await getProducts(0);
+
+  return {
+    props: {
+      preFetchedProducts: preFetchedProducts.data,
+      initTotal: preFetchedProducts.total,
+    },
+  };
+}
 
 export default Home;
