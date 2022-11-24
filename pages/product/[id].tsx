@@ -1,44 +1,33 @@
-import { NextPage } from "next";
+import { GetStaticPropsContext, NextPage } from "next";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState } from "react";
-import { getProductById } from "../../axios/product";
+import { useEffect } from "react";
+import { getProductById, preFetchAllProducts } from "../../axios/product";
 import { IProduct } from "../../types/product";
 import { toast } from "react-toastify";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+
 import Star from "../../svg/Star";
 import EmptyStar from "../../svg/EmptyStar";
 import styles from "./productPage.module.scss";
 import Head from "next/head";
 
-const ProductPage: NextPage = () => {
-  const router = useRouter();
-  const { productId } = useRouter().query as { productId: string };
-  const [product, setProduct] = useState<IProduct>({} as IProduct);
-  const [loading, setLoading] = useState<boolean>(true);
+type Props = {
+  product: IProduct;
+};
 
-  const fetchProducts = useCallback(async () => {
-    if (productId) {
-      try {
-        const product = await getProductById(productId);
-        setProduct(product);
-        setLoading(false);
-      } catch (e) {
-        router.push("/");
-        toast.error("Something went wrong! Please try again!");
-      }
-    }
-  }, [productId]);
+const ProductPage: NextPage<Props> = ({ product }) => {
+  const router = useRouter();
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    if (!product.title) {
+      router.push("/");
+      toast.error("Something went wrong! Please try again!");
+    }
+  }, []);
 
-  return loading ? (
-    <LoadingSpinner isFullscreen />
-  ) : (
+  return (
     <div className="min-h-screen flex items-center">
       <Head>
         <title>{product.title}</title>
@@ -116,5 +105,28 @@ const ProductPage: NextPage = () => {
     </div>
   );
 };
+
+export async function getStaticPaths() {
+  const products = await preFetchAllProducts();
+
+  const paths: { params: { id: string } }[] = products.map((product) => ({
+    params: { id: String(product.id) },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const { id } = context.params as { id: string };
+
+  const product: IProduct = await getProductById(id);
+
+  return {
+    props: { product },
+  };
+}
 
 export default ProductPage;

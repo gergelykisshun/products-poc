@@ -22,6 +22,14 @@ export const getProducts = async (
   };
 };
 
+export const preFetchAllProducts = async (): Promise<IProduct[]> => {
+  const response = await api.get("");
+
+  const products: IProduct[] = response.data.products;
+
+  return products;
+};
+
 export const getProductById = async (productId: string): Promise<IProduct> => {
   const response = await api.get<IProduct>(`/${productId}`);
   return response.data;
