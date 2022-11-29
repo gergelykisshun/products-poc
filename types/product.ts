@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface IProduct {
   id: number;
   title: string;
@@ -19,4 +21,9 @@ export interface IProductCardData {
   discountPercentage: number;
   price: number;
   thumbnail: string;
+}
+
+export interface IProductContext {
+  productsCache: IProductCardData[];
+  setProductsCache: Dispatch<SetStateAction<IProductCardData[]>>;
 }
