@@ -87,7 +87,7 @@ const Home: NextPage = () => {
             </main>
             {isFetchingNewItems && <LoadingSpinner isFullscreen />}
           </div>
-          <div ref={reachedPageEndRef} />
+          <div ref={reachedPageEndRef} className="h-9" />
         </>
       )}
     </div>

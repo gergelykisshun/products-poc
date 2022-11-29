@@ -33,20 +33,22 @@ const ProductCard: FC<Props> = ({ productData }) => {
           </p>
         </div>
 
-        <div className="flex items-center justify-between w-full">
-          <p className="font-semibold text-xl">
-            {productTitleArr.length < 2
-              ? productData.title
-              : productTitleArr.slice(0, 2).join(" ") + "..."}
-          </p>
-          <p className="font-semibold text-2xl">{productData.price} $</p>
-        </div>
-        <div className="w-9/12 self-start">
-          <p>
-            {productTextArr.length < 7
-              ? productData.description
-              : productTextArr.slice(0, 7).join(" ") + "..."}
-          </p>
+        <div className="h-24 overflow-hidden">
+          <div className="flex items-center justify-between w-full">
+            <p className="font-semibold text-xl">
+              {productTitleArr.length < 3
+                ? productData.title
+                : productTitleArr.slice(0, 2).join(" ") + "..."}
+            </p>
+            <p className="font-semibold text-2xl">{productData.price} $</p>
+          </div>
+          <div className="w-9/12 self-start">
+            <p>
+              {productTextArr.length < 7
+                ? productData.description
+                : productTextArr.slice(0, 7).join(" ") + "..."}
+            </p>
+          </div>
         </div>
       </div>
 
