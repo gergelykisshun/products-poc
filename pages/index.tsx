@@ -7,8 +7,12 @@ import { IProductCardData } from "../types/product";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import useOnScreen from "../hooks/useOnScreen";
+import { useProducts, useUpdateProducts } from "../contexts/ProductContext";
 
 const Home: NextPage = () => {
+  const cachedProducts = useProducts();
+  const setCachedProducts = useUpdateProducts();
+
   const [products, setProducts] = useState<IProductCardData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -23,6 +27,7 @@ const Home: NextPage = () => {
       try {
         const products = await getProducts(skip);
         setProducts((prev) => [...prev, ...products.data]);
+        setCachedProducts((prev) => [...prev, ...products.data]);
         setTotal(products.total);
         setLoading(false);
         toast.success("Products loaded!");
@@ -41,7 +46,12 @@ const Home: NextPage = () => {
   }, [reachedPageEnd]);
 
   useEffect(() => {
-    fetchProducts(skip);
+    if (cachedProducts.length > 0) {
+      setProducts(cachedProducts);
+      setLoading(false);
+    } else {
+      fetchProducts(skip);
+    }
   }, []);
 
   useEffect(() => {
