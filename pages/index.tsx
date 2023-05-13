@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { useInView } from "react-intersection-observer";
 import { useProductsStore } from "../store/productStore";
+import { SKIP_INCREASE } from "../axios/constants";
 
 type Props = {
   initialProducts: IProductCardData[];
@@ -25,25 +26,23 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
   );
   const [total, setTotal] = useState<number>(initialTotal);
 
-  const [skip, setSkip] = useState<number>(0);
+  const [skip, setSkip] = useState<number>(SKIP_INCREASE);
   const [isFetchingNewItems, setIsFetchingNewItems] = useState<boolean>(false);
 
   const { ref: reachedPageEndRef, inView: reachedPageEnd } = useInView();
 
-  const fetchProducts = useCallback(
-    async (skip: number) => {
-      try {
-        const products = await getProducts(skip);
-        setProducts((prev) => [...prev, ...products.data]);
-        addProductsToCache(products.data);
-        setTotal(products.total);
-        toast.success("Products loaded!");
-      } catch (e) {
-        toast.error("Something went wrong! Please try again!");
-      }
-    },
-    [skip]
-  );
+  const fetchProducts = useCallback(async () => {
+    try {
+      const products = await getProducts(skip);
+      setProducts((prev) => [...prev, ...products.data]);
+      addProductsToCache(products.data);
+      setTotal(products.total);
+      setSkip((prev) => prev + SKIP_INCREASE);
+      toast.success("Products loaded!");
+    } catch (e) {
+      toast.error("Something went wrong! Please try again!");
+    }
+  }, [skip]);
 
   useEffect(() => {
     if (reachedPageEnd) {
@@ -53,10 +52,8 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
 
   const fetchNewItems = async () => {
     if (products.length < total) {
-      const newSkip = skip + 10;
       setIsFetchingNewItems(true);
-      await fetchProducts(newSkip);
-      setSkip((prev) => prev + 10);
+      await fetchProducts();
       setIsFetchingNewItems(false);
     } else {
       toast.info("There are no more items available!");
