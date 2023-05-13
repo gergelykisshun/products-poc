@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getProducts } from "../axios/product";
@@ -8,11 +8,15 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import useOnScreen from "../hooks/useOnScreen";
 
-const Home: NextPage = () => {
-  const [products, setProducts] = useState<IProductCardData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+type Props = {
+  initialProducts: IProductCardData[];
+  initialTotal: number;
+};
 
-  const [total, setTotal] = useState<number>(0);
+const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
+  const [products, setProducts] = useState<IProductCardData[]>(initialProducts);
+  const [total, setTotal] = useState<number>(initialTotal);
+
   const [skip, setSkip] = useState<number>(0);
   const [isFetchingNewItems, setIsFetchingNewItems] = useState<boolean>(false);
 
@@ -24,10 +28,8 @@ const Home: NextPage = () => {
         const products = await getProducts(skip);
         setProducts((prev) => [...prev, ...products.data]);
         setTotal(products.total);
-        setLoading(false);
         toast.success("Products loaded!");
       } catch (e) {
-        setLoading(false);
         toast.error("Something went wrong! Please try again!");
       }
     },
@@ -39,10 +41,6 @@ const Home: NextPage = () => {
       startFetchingNewItems();
     }
   }, [reachedPageEnd]);
-
-  useEffect(() => {
-    fetchProducts(skip);
-  }, []);
 
   useEffect(() => {
     if (isFetchingNewItems) {
@@ -66,32 +64,40 @@ const Home: NextPage = () => {
         <title>Products - POC</title>
       </Head>
       <h1 className="text-center py-9">See Products</h1>
-
-      {loading ? (
-        <LoadingSpinner isFullscreen />
-      ) : (
-        <>
-          <div className="flex flex-col items-center">
-            <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {products.length > 0 ? (
-                products.map((product) => (
-                  <div key={product.id} className="flex justify-center">
-                    <ProductCard productData={product} />
-                  </div>
-                ))
-              ) : (
-                <p>
-                  No products are available currently. Please come back later!
-                </p>
-              )}
-            </main>
-            {isFetchingNewItems && <LoadingSpinner isFullscreen />}
-          </div>
-          <div ref={reachedPageEndRef} />
-        </>
-      )}
+      <>
+        <div className="flex flex-col items-center">
+          <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {products.length > 0 ? (
+              products.map((product) => (
+                <div key={product.id} className="flex justify-center">
+                  <ProductCard productData={product} />
+                </div>
+              ))
+            ) : (
+              <p>
+                No products are available currently. Please come back later!
+              </p>
+            )}
+          </main>
+          {isFetchingNewItems && <LoadingSpinner isFullscreen />}
+        </div>
+        <div ref={reachedPageEndRef} className="h-5" />
+      </>
     </div>
   );
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const { data, total } = await getProducts();
+    return {
+      props: { initialProducts: data, initialTotal: total },
+      revalidate: 60 * 30,
+    };
+  } catch (e) {
+    console.log("Fetching products failed with cause:", e);
+    return { props: { initialProducts: [], initialTotal: 0 } };
+  }
+};

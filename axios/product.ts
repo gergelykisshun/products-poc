@@ -1,13 +1,17 @@
+import { IGenericApiResponse } from "../interfaces/generic";
 import { IProduct, IProductCardData } from "../types/product";
-import { limitQuery } from "./constants";
+import { LIMIT, SKIP } from "./constants";
 import { api } from "./init";
 
 export const getProducts = async (
-  skip: number
+  skip: number = SKIP,
+  limit: number = LIMIT
 ): Promise<{ data: IProductCardData[]; total: number }> => {
-  const response = await api.get(`${limitQuery}&skip=${skip}`);
+  const response = await api.get<IGenericApiResponse<IProduct>>(
+    `?limit=${limit}&skip=${skip}`
+  );
 
-  const products: IProduct[] = response.data.products;
+  const products = response.data.products;
 
   return {
     data: products.map((product) => ({
