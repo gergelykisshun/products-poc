@@ -7,6 +7,7 @@ import { IProductCardData } from "../interfaces/product";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { useInView } from "react-intersection-observer";
+import { useProductsStore } from "../store/productStore";
 
 type Props = {
   initialProducts: IProductCardData[];
@@ -14,7 +15,14 @@ type Props = {
 };
 
 const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
-  const [products, setProducts] = useState<IProductCardData[]>(initialProducts);
+  const cachedProducts = useProductsStore((state) => state.cachedProducts);
+  const addProductsToCache = useProductsStore(
+    (state) => state.addProductsToCache
+  );
+
+  const [products, setProducts] = useState<IProductCardData[]>(() =>
+    cachedProducts.length > 0 ? cachedProducts : initialProducts
+  );
   const [total, setTotal] = useState<number>(initialTotal);
 
   const [skip, setSkip] = useState<number>(0);
@@ -27,6 +35,7 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
       try {
         const products = await getProducts(skip);
         setProducts((prev) => [...prev, ...products.data]);
+        addProductsToCache(products.data);
         setTotal(products.total);
         toast.success("Products loaded!");
       } catch (e) {
