@@ -38,21 +38,17 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
 
   useEffect(() => {
     if (reachedPageEnd) {
-      startFetchingNewItems();
+      fetchNewItems();
     }
   }, [reachedPageEnd]);
 
-  useEffect(() => {
-    if (isFetchingNewItems) {
-      fetchProducts(skip);
-    }
-    setIsFetchingNewItems(false);
-  }, [isFetchingNewItems]);
-
-  const startFetchingNewItems = () => {
+  const fetchNewItems = async () => {
     if (products.length < total) {
-      setSkip((prev) => prev + 10);
+      const newSkip = skip + 10;
       setIsFetchingNewItems(true);
+      await fetchProducts(newSkip);
+      setSkip((prev) => prev + 10);
+      setIsFetchingNewItems(false);
     } else {
       toast.info("There are no more items available!");
     }
