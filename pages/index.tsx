@@ -6,7 +6,7 @@ import ProductCard from "../components/ProductCard/ProductCard";
 import { IProductCardData } from "../types/product";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
-import useOnScreen from "../hooks/useOnScreen";
+import { useInView } from "react-intersection-observer";
 
 type Props = {
   initialProducts: IProductCardData[];
@@ -20,7 +20,7 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
   const [skip, setSkip] = useState<number>(0);
   const [isFetchingNewItems, setIsFetchingNewItems] = useState<boolean>(false);
 
-  const [reachedPageEnd, reachedPageEndRef] = useOnScreen();
+  const { ref: reachedPageEndRef, inView: reachedPageEnd } = useInView();
 
   const fetchProducts = useCallback(
     async (skip: number) => {
@@ -81,7 +81,7 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
           </main>
           {isFetchingNewItems && <LoadingSpinner isFullscreen />}
         </div>
-        <div ref={reachedPageEndRef} className="h-5" />
+        <div ref={reachedPageEndRef} className="h-1" />
       </>
     </div>
   );
