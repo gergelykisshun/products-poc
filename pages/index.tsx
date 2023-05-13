@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getProducts } from "../axios/product";
 import ProductCard from "../components/ProductCard/ProductCard";
-import { IProductCardData } from "../types/product";
+import { IProductCardData } from "../interfaces/product";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { useInView } from "react-intersection-observer";

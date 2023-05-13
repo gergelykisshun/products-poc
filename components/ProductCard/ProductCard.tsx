@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
-import { IProductCardData } from "../../types/product";
+import { IProductCardData } from "../../interfaces/product";
 import styles from "./ProductCard.module.scss";
 
 type Props = {

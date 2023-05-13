@@ -1,5 +1,5 @@
 import { IGenericApiResponse } from "../interfaces/generic";
-import { IProduct, IProductCardData } from "../types/product";
+import { IProduct, IProductCardData } from "../interfaces/product";
 import { LIMIT, SKIP } from "./constants";
 import { api } from "./init";
 

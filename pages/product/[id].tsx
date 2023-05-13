@@ -9,19 +9,22 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper";
 import React from "react";
 import { getProductById, preFetchAllProducts } from "../../axios/product";
-import { IProduct } from "../../types/product";
+import { IProduct } from "../../interfaces/product";
 import { toast } from "react-toastify";
 
 import Star from "../../svg/Star";
 import EmptyStar from "../../svg/EmptyStar";
 import styles from "./productPage.module.scss";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 type Props = {
   product: IProduct;
 };
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen flex items-center">
       <Head>
