@@ -1,6 +1,6 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getProducts } from "../axios/product";
 import ProductCard from "../components/ProductCard/ProductCard";
 import { IProductCardData } from "../interfaces/product";
@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { useInView } from "react-intersection-observer";
 import { useProductsStore } from "../store/productStore";
-import { SKIP_INCREASE } from "../axios/constants";
 
 type Props = {
   initialProducts: IProductCardData[];
