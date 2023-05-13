@@ -1,6 +1,6 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getProducts } from "../axios/product";
 import ProductCard from "../components/ProductCard/ProductCard";
 import { IProductCardData } from "../interfaces/product";
@@ -20,24 +20,24 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
   const addProductsToCache = useProductsStore(
     (state) => state.addProductsToCache
   );
+  const skip = useProductsStore((state) => state.skip);
+  const increaseSkip = useProductsStore((state) => state.increaseSkip);
 
-  const [products, setProducts] = useState<IProductCardData[]>(() =>
-    cachedProducts.length > 0 ? cachedProducts : initialProducts
-  );
   const [total, setTotal] = useState<number>(initialTotal);
-
-  const [skip, setSkip] = useState<number>(SKIP_INCREASE);
   const [isFetchingNewItems, setIsFetchingNewItems] = useState<boolean>(false);
-
+  const amountOfProducts = useMemo<number>(
+    () => cachedProducts.length + initialProducts.length,
+    [cachedProducts, initialProducts]
+  );
   const { ref: reachedPageEndRef, inView: reachedPageEnd } = useInView();
 
   const fetchProducts = useCallback(async () => {
     try {
       const products = await getProducts(skip);
-      setProducts((prev) => [...prev, ...products.data]);
+
       addProductsToCache(products.data);
       setTotal(products.total);
-      setSkip((prev) => prev + SKIP_INCREASE);
+      increaseSkip();
       toast.success("Products loaded!");
     } catch (e) {
       toast.error("Something went wrong! Please try again!");
@@ -51,7 +51,7 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
   }, [reachedPageEnd]);
 
   const fetchNewItems = async () => {
-    if (products.length < total) {
+    if (amountOfProducts < total) {
       setIsFetchingNewItems(true);
       await fetchProducts();
       setIsFetchingNewItems(false);
@@ -69,8 +69,8 @@ const Home: NextPage<Props> = ({ initialProducts, initialTotal }) => {
       <>
         <div className="flex flex-col items-center">
           <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {products.length > 0 ? (
-              products.map((product) => (
+            {amountOfProducts > 0 ? (
+              [...initialProducts, ...cachedProducts].map((product) => (
                 <div key={product.id} className="flex justify-center">
                   <ProductCard productData={product} />
                 </div>
