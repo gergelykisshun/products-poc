@@ -126,8 +126,10 @@ export const getStaticProps: GetStaticProps = async (
 
   try {
     const product: IProduct = await getProductById(id);
+
     return {
       props: { product },
+      revalidate: 10,
     };
   } catch (e) {
     return { notFound: true };
